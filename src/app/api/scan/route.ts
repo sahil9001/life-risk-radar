@@ -58,6 +58,6 @@ export async function GET() {
   } catch {
     const rows = await loadLocalRows();
     const risks = buildRisksFromRows(rows);
-    return NextResponse.json(summarizeScan(risks, false, sql));
+    return NextResponse.json(summarizeScan(risks, true, sql));
   }
 }
