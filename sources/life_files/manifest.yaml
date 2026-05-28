@@ -1,0 +1,112 @@
+name: life_files
+version: 0.1.0
+dsl_version: 3
+backend: jsonl
+description: Synthetic Life Risk Radar demo data for transactions, documents, deadlines, calendar events, and Gmail mirrors.
+test_queries:
+  - SELECT * FROM life_files.transactions LIMIT 1
+  - SELECT * FROM life_files.documents LIMIT 1
+  - SELECT * FROM life_files.manual_deadlines LIMIT 1
+  - SELECT * FROM life_files.calendar_events LIMIT 1
+  - SELECT * FROM life_files.gmail_messages LIMIT 1
+tables:
+  - name: transactions
+    description: Seeded bank/card transactions used to detect duplicate charges and money at risk.
+    source:
+      location: file:///Users/ssilare/Desktop/projects/coral-hackathon/sample-data/
+      glob: transactions.jsonl
+    columns:
+      - name: id
+        type: Utf8
+      - name: posted_at
+        type: Timestamp
+      - name: merchant
+        type: Utf8
+      - name: amount
+        type: Float64
+      - name: currency
+        type: Utf8
+      - name: category
+        type: Utf8
+      - name: raw_description
+        type: Utf8
+  - name: documents
+    description: Seeded document inventory and missing-document rows.
+    source:
+      location: file:///Users/ssilare/Desktop/projects/coral-hackathon/sample-data/
+      glob: documents.jsonl
+    columns:
+      - name: id
+        type: Utf8
+      - name: name
+        type: Utf8
+      - name: type
+        type: Utf8
+      - name: status
+        type: Utf8
+      - name: tags
+        type: Utf8
+      - name: updated_at
+        type: Timestamp
+  - name: manual_deadlines
+    description: Seeded explicit deadlines and amounts at risk.
+    source:
+      location: file:///Users/ssilare/Desktop/projects/coral-hackathon/sample-data/
+      glob: manual_deadlines.jsonl
+    columns:
+      - name: id
+        type: Utf8
+      - name: title
+        type: Utf8
+      - name: due_at
+        type: Utf8
+      - name: amount_at_risk
+        type: Float64
+      - name: currency
+        type: Utf8
+      - name: category
+        type: Utf8
+      - name: source
+        type: Utf8
+  - name: calendar_events
+    description: Fallback seeded calendar events when live Google Calendar is not configured.
+    source:
+      location: file:///Users/ssilare/Desktop/projects/coral-hackathon/sample-data/
+      glob: calendar_events.jsonl
+    columns:
+      - name: id
+        type: Utf8
+      - name: title
+        type: Utf8
+      - name: description
+        type: Utf8
+      - name: start_time
+        type: Utf8
+      - name: end_time
+        type: Utf8
+      - name: source
+        type: Utf8
+  - name: gmail_messages
+    description: Mirror of seeded Gmail messages for reproducible demos without exposing personal inbox data.
+    source:
+      location: file:///Users/ssilare/Desktop/projects/coral-hackathon/sample-data/
+      glob: gmail_messages.jsonl
+    columns:
+      - name: id
+        type: Utf8
+      - name: thread_id
+        type: Utf8
+      - name: subject
+        type: Utf8
+      - name: from_email
+        type: Utf8
+      - name: from_domain
+        type: Utf8
+      - name: snippet
+        type: Utf8
+      - name: body_text
+        type: Utf8
+      - name: received_at
+        type: Utf8
+      - name: labels
+        type: Utf8

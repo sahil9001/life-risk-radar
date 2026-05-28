@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased bg-[#FBFBF9] text-[#111827] font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+.custom-shadow {
+  box-shadow: 0 10px 40px rgba(22, 32, 27, 0.03);
+}
+
+.bento-card {
+  background: #FFFFFF;
+  border: 1px solid #E4E2D4;
+  box-shadow: 0 10px 40px rgba(22, 32, 27, 0.03);
+  transition: transform 0.2s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+}
+
+.editorial-shadow {
+  box-shadow: 0 10px 40px rgba(22, 32, 27, 0.03);
+}
+
+.editorial-border {
+  border: 1px solid #E4E2D4;
+}
+
+.card-header-border {
+  border-bottom: 1px solid #F1F0E8;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #E4E2D4;
+  border-radius: 10px;
+}
+
+.glass-sidebar {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fallback for Material Symbols when font hasn't loaded */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

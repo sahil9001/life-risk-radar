@@ -1,0 +1,11 @@
+.next/
+.coral-config/
+node_modules/
+out/
+dist/
+.env
+.env.local
+.env.*.local
+credentials/*.json
+token.json
+npm-debug.log*

@@ -1,0 +1,130 @@
+name: gmail
+version: 0.1.0
+dsl_version: 3
+backend: http
+description: Read-only Gmail source for searching demo-account messages and fetching message details.
+inputs:
+  GMAIL_ACCESS_TOKEN:
+    kind: secret
+    hint: OAuth access token with gmail.readonly or gmail.insert/read scopes for the fresh demo account.
+base_url: https://gmail.googleapis.com
+auth:
+  type: HeaderAuth
+  headers:
+    - name: Authorization
+      from: template
+      template: Bearer {{input.GMAIL_ACCESS_TOKEN}}
+test_queries:
+  - SELECT * FROM gmail.message_search WHERE query = 'LifeRisk' LIMIT 1
+tables:
+  - name: message_search
+    description: Search Gmail messages with Gmail's native q query syntax. Use returned id values with gmail.message_details.
+    fetch_limit_default: 20
+    filters:
+      - name: query
+      - name: label_ids
+    request:
+      method: GET
+      path: /gmail/v1/users/me/messages
+      query:
+        - name: q
+          from: filter
+          key: query
+        - name: labelIds
+          from: filter
+          key: label_ids
+    response:
+      rows_path:
+        - messages
+    pagination:
+      mode: cursor_query
+      page_size:
+        default: 20
+        max: 100
+        query_param: maxResults
+      cursor_param: pageToken
+      response_cursor_path:
+        - nextPageToken
+    columns:
+      - name: id
+        type: Utf8
+        nullable: false
+        description: Gmail message ID.
+        expr:
+          kind: path
+          path:
+            - id
+      - name: thread_id
+        type: Utf8
+        nullable: true
+        description: Gmail thread ID.
+        expr:
+          kind: path
+          path:
+            - threadId
+      - name: query
+        type: Utf8
+        nullable: true
+        virtual: true
+        description: Gmail q filter used for this search.
+        expr:
+          kind: from_filter
+          key: query
+  - name: message_details
+    description: Full Gmail message payload for a specific message ID.
+    filters:
+      - name: id
+        required: true
+    request:
+      method: GET
+      path: /gmail/v1/users/me/messages/{{filter.id}}
+      query:
+        - name: format
+          from: literal
+          value: full
+    response:
+      row_strategy: direct
+    pagination:
+      mode: none
+    columns:
+      - name: id
+        type: Utf8
+        nullable: false
+        expr:
+          kind: path
+          path:
+            - id
+      - name: thread_id
+        type: Utf8
+        nullable: true
+        expr:
+          kind: path
+          path:
+            - threadId
+      - name: snippet
+        type: Utf8
+        nullable: true
+        expr:
+          kind: path
+          path:
+            - snippet
+      - name: label_ids
+        type: Utf8
+        nullable: true
+        expr:
+          kind: join_array
+          path:
+            - labelIds
+      - name: payload
+        type: Json
+        nullable: true
+        description: Full Gmail payload including headers and body parts.
+        expr:
+          kind: path
+          path:
+            - payload
+      - name: raw
+        type: Json
+        nullable: false
+        expr:
+          kind: current_row

@@ -1,0 +1,5 @@
+{"id":"doc_passport_photo","name":"passport_photo.jpg","type":"photo","status":"ready","tags":"passport,appointment","updated_at":"2026-05-24"}
+{"id":"doc_address_proof","name":"address_proof.pdf","type":"id_document","status":"missing","tags":"passport,kyc,bank,address","updated_at":"2026-05-24"}
+{"id":"doc_old_passport","name":"old_passport.pdf","type":"id_document","status":"ready","tags":"passport,appointment","updated_at":"2026-05-24"}
+{"id":"doc_bank_statement","name":"bank_statement.pdf","type":"financial","status":"ready","tags":"kyc,bank","updated_at":"2026-05-25"}
+{"id":"doc_appointment_receipt","name":"passport_appointment_receipt.pdf","type":"receipt","status":"ready","tags":"passport,appointment","updated_at":"2026-05-25"}

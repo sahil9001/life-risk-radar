@@ -1,0 +1,6 @@
+{"id":"deadline_notion","title":"Cancel Notion AI trial","due_at":"2026-05-30T09:00:00Z","amount_at_risk":96,"currency":"USD","category":"renewal","source":"manual"}
+{"id":"deadline_amazon","title":"Amazon return window closes","due_at":"2026-05-31T23:59:00Z","amount_at_risk":129,"currency":"USD","category":"refund","source":"manual"}
+{"id":"deadline_booking","title":"Hotel free cancellation ends","due_at":"2026-05-29T18:00:00Z","amount_at_risk":280,"currency":"USD","category":"cancellation","source":"manual"}
+{"id":"deadline_passport","title":"Passport appointment document check","due_at":"2026-05-30T11:00:00Z","amount_at_risk":0,"currency":"USD","category":"document","source":"manual"}
+{"id":"deadline_kyc","title":"Submit bank KYC documents","due_at":"2026-06-03T10:00:00Z","amount_at_risk":0,"currency":"USD","category":"kyc","source":"manual"}
+{"id":"deadline_domain","title":"Decide whether to renew sahil.dev","due_at":"2026-05-28T12:00:00Z","amount_at_risk":49,"currency":"USD","category":"renewal","source":"manual"}
