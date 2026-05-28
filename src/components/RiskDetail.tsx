@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Circle, Clock3, WalletCards, Check, Mail, Receipt, ExternalLink, Shield } from "lucide-react";
-import { SourceChip } from "@/components/SourceChip";
+import { Check, Mail, Receipt, ExternalLink } from "lucide-react";
 import { categoryEmoji, closeSteps, dateLabel, money, severityTone, sourceMeta } from "@/lib/risk-ui";
 import type { RiskCard } from "@/lib/types";
 
@@ -222,7 +221,7 @@ export function RiskDetail({ risk }: { risk: RiskCard }) {
                     {row.title}
                   </h4>
                   <p className="text-[#5C6960] text-sm leading-relaxed break-words italic bg-[#FBFBF9] p-3 border border-[#E4E2D4] rounded-xl font-mono">
-                    "{row.detail}"
+                    &quot;{row.detail}&quot;
                   </p>
                 </div>
               </div>

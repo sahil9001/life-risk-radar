@@ -1,13 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Copy, Database, Loader2, Cpu, ShieldCheck, Activity, Eye, Zap, Layers, RefreshCw } from "lucide-react";
+import { Copy, Database, Loader2, Activity, RefreshCw } from "lucide-react";
 import { AskPanel } from "@/components/AskPanel";
-import { CoralWordmark } from "@/components/CoralWordmark";
 import { RiskCardView } from "@/components/RiskCardView";
 import { SourceLogo } from "@/components/SourceLogo";
 import {
-  flowSteps,
   groupFor,
   groupMeta,
   groupOrder,
@@ -151,7 +149,7 @@ export default function Home() {
                 </div>
                 <h4 className="font-display text-xl text-primary font-normal">Radar Status: Idle</h4>
                 <p className="text-xs text-[#5C6960] max-w-[200px] mx-auto">
-                  Ready to perform a full system analysis. Click "Scan all risks" below to sweep all signals.
+                  Ready to perform a full system analysis. Click &quot;Scan all risks&quot; below to sweep all signals.
                 </p>
               </div>
             )}
@@ -298,11 +296,11 @@ export default function Home() {
                 <p><span className="text-[#6bd8cb]">SELECT</span> transactions.date, vendors.name, email.subject</p>
                 <p><span className="text-[#6bd8cb]">FROM</span> local_financial_sync <span className="text-white/40">AS</span> transactions</p>
                 <p><span className="text-[#6bd8cb]">JOIN</span> cloud_inbox <span className="text-white/40">AS</span> email <span className="text-[#6bd8cb]">ON</span> transactions.amount = email.price_tag</p>
-                <p><span className="text-[#6bd8cb]">WHERE</span> transactions.status = <span className="text-[#86f2e4]">'active_recurring'</span></p>
-                <p><span className="text-[#6bd8cb]">AND</span> email.sentiment = <span className="text-[#86f2e4]">'low_usage_alert'</span>;</p>
+                <p><span className="text-[#6bd8cb]">WHERE</span> transactions.status = <span className="text-[#86f2e4]">&apos;active_recurring&apos;</span></p>
+                <p><span className="text-[#6bd8cb]">AND</span> email.sentiment = <span className="text-[#86f2e4]">&apos;low_usage_alert&apos;</span>;</p>
               </div>
               <div className="pt-4 border-t border-white/10 text-white/40 select-none">
-                <p>// Joined 428 tables securely on device.</p>
+                <p>Joined 428 tables securely on device.</p>
                 <p className="text-[#86f2e4] font-bold">&gt; Found: Notion LLC subscription matching low activity thread</p>
               </div>
             </div>
@@ -320,7 +318,7 @@ export default function Home() {
                   <span>Smart Assist</span>
                 </div>
                 <p className="text-xs text-white/80 font-mono italic">
-                  "Drafted cancellation email for notion.so support ready for dispatch..."
+                  &quot;Drafted cancellation email for notion.so support ready for dispatch...&quot;
                 </p>
               </div>
             </div>
