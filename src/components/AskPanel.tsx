@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Code2, Copy, Loader2, Send, Sparkles } from "lucide-react";
+import { Code2, Copy, Loader2, Send, Sparkles, Key } from "lucide-react";
 import { SourceChip } from "@/components/SourceChip";
 import { SUGGESTED_QUESTIONS } from "@/lib/ask-questions";
 import { dateLabel, money } from "@/lib/risk-ui";
@@ -21,6 +21,13 @@ export function AskPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSql, setShowSql] = useState(true);
+  const [apiKey, setApiKey] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("anthropic_api_key") || "";
+    }
+    return "";
+  });
+  const [showKeyInput, setShowKeyInput] = useState(false);
 
   async function ask(input: string) {
     const trimmed = input.trim();
@@ -29,9 +36,15 @@ export function AskPanel() {
     setLoading(true);
     setError(null);
     try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json"
+      };
+      if (apiKey) {
+        headers["x-anthropic-api-key"] = apiKey;
+      }
       const response = await fetch("/api/ask", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ question: trimmed })
       });
       const data = await response.json();
@@ -57,10 +70,49 @@ export function AskPanel() {
               Ask in plain English. Coral joins your inbox, calendar & files to answer.
             </h3>
           </div>
-          <span className="inline-block px-3 py-1 bg-[#7FD8C2]/15 text-[#A7F3D0] rounded-full text-xs font-mono font-bold select-none">
-            natural language → SQL
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowKeyInput((val) => !val)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7FD8C2]/15 hover:bg-[#7FD8C2]/30 active:scale-95 text-[#A7F3D0] rounded-full text-xs font-mono font-bold select-none transition-all"
+            >
+              <Key size={11} />
+              <span>{apiKey ? "Key Active" : "Set API Key"}</span>
+            </button>
+            <span className="inline-block px-3 py-1 bg-[#7FD8C2]/15 text-[#A7F3D0] rounded-full text-xs font-mono font-bold select-none">
+              natural language → SQL
+            </span>
+          </div>
         </div>
+
+        {showKeyInput && (
+          <div className="flex flex-col gap-1.5 p-3.5 bg-white/5 border border-[#7FD8C2]/20 rounded-xl transition-all">
+            <label className="text-xs font-bold text-[#7FD8C2] uppercase tracking-wider flex items-center gap-1.5">
+              <Key size={12} />
+              <span>Anthropic API Key (Saved locally in browser)</span>
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(event) => {
+                  const val = event.target.value;
+                  setApiKey(val);
+                  localStorage.setItem("anthropic_api_key", val);
+                }}
+                placeholder="sk-ant-..."
+                className="flex-grow bg-white/10 border border-[#7FD8C2]/30 text-[#F4FBF8] placeholder-[#8FB8AD] rounded-lg h-9 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#7FD8C2]/50 transition-all font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowKeyInput(false)}
+                className="bg-[#7FD8C2]/25 hover:bg-[#7FD8C2]/45 text-[#7FD8C2] rounded-lg px-3 text-xs font-bold transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
         <form
           onSubmit={(event: React.FormEvent) => {

@@ -63,6 +63,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Ask a question, e.g. 'What is costing me money this week?'" }, { status: 400 });
   }
 
+  const userApiKey = request.headers.get("x-anthropic-api-key") || undefined;
+
   // A chip click sends one of the suggested questions verbatim -> use the vetted
   // template (deterministic, always demo-ready). Anything typed -> Claude writes SQL.
   const suggestion = SUGGESTED_QUESTIONS.find((s) => s.question.trim().toLowerCase() === question.toLowerCase());
@@ -76,8 +78,8 @@ export async function POST(request: Request) {
     if (suggestion) {
       templateId = suggestion.id;
       sql = await loadTemplateSql(suggestion.id);
-    } else if (claudeAvailable()) {
-      sql = await generateSqlWithClaude(question);
+    } else if (claudeAvailable(userApiKey)) {
+      sql = await generateSqlWithClaude(question, userApiKey);
       usedClaude = true;
     } else if (matched) {
       templateId = matched.id;
@@ -127,7 +129,7 @@ export async function POST(request: Request) {
   // For Claude-generated queries, let Claude also read the results and write the
   // headline + drafted action so the answer is reasoned over real data.
   if (usedClaude) {
-    const summary = await summarizeWithClaude(question, columns, rows);
+    const summary = await summarizeWithClaude(question, columns, rows, userApiKey);
     if (summary) {
       headline = summary.headline;
       draft = summary.draft;

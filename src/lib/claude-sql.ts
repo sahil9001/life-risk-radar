@@ -4,8 +4,8 @@ import type { AskColumn, AskRow } from "@/lib/types";
 
 const MODEL = "claude-opus-4-7";
 
-export function claudeAvailable(): boolean {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
+export function claudeAvailable(apiKey?: string): boolean {
+  return Boolean(apiKey || process.env.ANTHROPIC_API_KEY);
 }
 
 function textOf(message: Anthropic.Message): string {
@@ -21,8 +21,8 @@ function textOf(message: Anthropic.Message): string {
  * The system prompt (schema) is cached so repeated asks reuse the cached prefix.
  * The result is always run through validateReadOnlySql before it can execute.
  */
-export async function generateSqlWithClaude(question: string): Promise<string> {
-  const client = new Anthropic();
+export async function generateSqlWithClaude(question: string, apiKey?: string): Promise<string> {
+  const client = new Anthropic({ apiKey: apiKey || process.env.ANTHROPIC_API_KEY });
   const message = await client.messages.create({
     model: MODEL,
     max_tokens: 1500,
@@ -60,10 +60,11 @@ export type ClaudeSummary = {
 export async function summarizeWithClaude(
   question: string,
   columns: AskColumn[],
-  rows: AskRow[]
+  rows: AskRow[],
+  apiKey?: string
 ): Promise<ClaudeSummary | null> {
   try {
-    const client = new Anthropic();
+    const client = new Anthropic({ apiKey: apiKey || process.env.ANTHROPIC_API_KEY });
     const message = await client.messages.create({
       model: MODEL,
       max_tokens: 500,
@@ -95,3 +96,4 @@ export async function summarizeWithClaude(
     return null;
   }
 }
+
